@@ -1,8 +1,8 @@
 https://www.hackerrank.com/challenges/average-population-of-each-continent/problem?isFullScreen=true
 - level : basic join
-FLOOR() 함수 : 소숫점 아래를 버리고 가장 가까운 작은 정수로 낼,ㅁ
-12.9 => FLOOR(12.9) => 12
--3.2 => FLOOR(-3.2) => -4
+FLOOR() 함수 : 소숫점 아래를 버리고 가장 가까운 작은 정수로 내림한다
+- 12.9 => FLOOR(12.9) => 12
+- -3.2 => FLOOR(-3.2) => -4
 
 # 1단계 : CITY와 COUNTRY 테이블을 JOIN한다.
 - 도시정보는 CITY테이블에
