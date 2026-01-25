@@ -35,3 +35,16 @@ SELECT CEIL(
 ) AS error
 FROM EMPLOYEES;
 ```
+
+## 💡 REPLACE 함수 주의점
+
+REPLACE()는 문자열 함수이므로 결과를 문자열로 반환한다.
+```sql
+SELECT REPLACE(10500, '0', '');
+```
+```sql
+'15' (문자열)
+```
+
+하지만 MySQL에서는 AVG() 사용 시 문자열을 자동으로 숫자로 형변환하므로     
+AVG(REPLACE(...)) 형태가 문제없이 동작한다.    
