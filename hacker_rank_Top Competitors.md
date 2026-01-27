@@ -145,4 +145,4 @@ ORDER BY
 1. JOIN 차례대로 여러번 (Submissions → Challenges → Difficulty)
 2. DISTICT
 
-로 생각하기로 함
+로 생각하기로 함. 이걸 계기로 join 문제에 익숙해지길...... (또 이런 바보짓은 안하겠지
