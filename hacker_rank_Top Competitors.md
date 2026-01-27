@@ -142,7 +142,7 @@ ORDER BY
 ```
 
 이 문제의 포인트는
-1. JOIN 차례대로 여러번
+1. JOIN 차례대로 여러번 (Submissions → Challenges → Difficulty)
 2. DISTICT
 
 로 생각하기로 함
