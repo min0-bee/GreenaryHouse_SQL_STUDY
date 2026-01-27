@@ -118,3 +118,31 @@ ORDER BY
 # 회고 
 서브쿼리 지옥이 됐다. 가독성도 성능도 너무 좋지 않다.
 좋지 않은 쿼리인 것 같아서 다른 방식으로 풀 수 있는지 gpt한테 물어봐야겠음.......
+
+좋은 쿼리는 join을 그냥 4번 하는거라고 한다.
+
+
+```sql
+SELECT
+  s.hacker_id,
+  h.name
+FROM Submissions s
+JOIN Challenges c
+  ON s.challenge_id = c.challenge_id
+JOIN Difficulty d
+  ON c.difficulty_level = d.difficulty_level
+JOIN Hackers h
+  ON s.hacker_id = h.hacker_id
+WHERE s.score = d.score
+GROUP BY s.hacker_id, h.name
+HAVING COUNT(DISTINCT s.challenge_id) >= 2
+ORDER BY
+  COUNT(DISTINCT s.challenge_id) DESC,
+  s.hacker_id ASC;
+```
+
+이 문제의 포인트는
+1. JOIN 차례대로 여러번
+2. DISTICT
+
+로 생각하기로 함
