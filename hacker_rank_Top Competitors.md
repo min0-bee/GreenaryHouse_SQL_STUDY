@@ -116,5 +116,5 @@ ORDER BY
 <img width="610" height="441" alt="image" src="https://github.com/user-attachments/assets/9dd42952-9aa8-43d0-9471-bbac12d088ea" />
 
 # 회고 
-서브쿼리 지옥이 됐다.
+서브쿼리 지옥이 됐다. 가독성도 성능도 너무 좋지 않다.
 좋지 않은 쿼리인 것 같아서 다른 방식으로 풀 수 있는지 gpt한테 물어봐야겠음.......
