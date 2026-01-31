@@ -1,66 +1,54 @@
--- 아 왤케 어려워
--- https://www.hackerrank.com/challenges/occupations/problem?isFullScreen=true
+아 왤케 어려워
+https://www.hackerrank.com/challenges/occupations/problem?isFullScreen=true
 
--- OCCUPATIONS 테이블에서 Occupation 컬럼을 피벗(Pivot) 하여,
--- 각 직업별(Name)을 알파벳순으로 정렬해 해당 직업 컬럼 아래에 출력하라.
+## 문제
+OCCUPATIONS 테이블에서 Occupation 컬럼을 피벗(Pivot) 하여,
+각 직업별(Name)을 알파벳순으로 정렬해 해당 직업 컬럼 아래에 출력하라.
 
--- 출력은 반드시 다음 4개 컬럼 순서로 구성되어야 한다.
+출력은 반드시 다음 4개 컬럼 순서로 구성되어야 한다.
 
--- Doctor, Professor, Singer, Actor
+Doctor, Professor, Singer, Actor
 
+컬럼 아래에는 해당 직업에 속한 사람들의 이름을 알파벳순으로 나열한다.
 
--- 각 컬럼 아래에는 해당 직업에 속한 사람들의 이름을 알파벳순으로 나열한다.
+만약 어떤 직업 컬럼에 더 이상 출력할 이름이 없다면
+그 자리는 NULL을 출력한다.
 
--- 만약 어떤 직업 컬럼에 더 이상 출력할 이름이 없다면
--- 그 자리는 NULL을 출력한다.
-
-
--- SELECT 
---     Name,
---     Occupation,
---     ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name)
--- FROM OCCUPATIONS;
-
--- Jenny      Doctor     1
--- Samantha  Doctor     2
-
--- Ashley    Professor  1
--- Christeen Professor  2
--- Ketty     Professor  3
-
--- Meera     Singer     1
--- Priya     Singer     2
-
--- Jane      Actor      1
--- Julia     Actor      2
--- Maria     Actor      3
+# 1단계 : 특정 직업에 속하는 사람들을 나열한다. : ROW_NUMBER와 PARTITION BY 사용
+1. 직업별로 묶어서 일열로 세우고
+2. ROW_NUMBER()로 순위를 부여한다.
 
 
-
--- SELECT rn, Name, Occupation
--- FROM (
---     SELECT
---         Name,
---         Occupation,
---         ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
---     FROM OCCUPATIONS
--- ) t
--- ORDER BY rn, Occupation;
+```sql
+SELECT 
+    Name,
+    Occupation,
+    ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name)
+FROM OCCUPATIONS;
+```
+<img width="272" height="267" alt="image" src="https://github.com/user-attachments/assets/bd127a31-a331-42b8-b5c8-77ac4f1b56be" />
 
 
--- rn  Name        Occupation
--- 1   Jenny      Doctor
--- 1   Ashley     Professor
--- 1   Meera      Singer
--- 1   Jane       Actor
+# 2단계 : 서브쿼리로 만든후 재정렬하기
+### 2-1. 서브쿼리로 만든다 (ALIAS 부여)
+1. rn :ROW_NUMBER로 부여한 순서
+2. t : SELECT한 테이블 전체
 
--- 2   Samantha  Doctor
--- 2   Christeen Professor
--- 2   Priya     Singer
--- 2   Julia     Actor
+### 2-2. ORDER BY 절을 사용해서 재정렬한다.
 
--- 3   Ketty     Professor
--- 3   Maria     Actor
+```sql
+SELECT rn, Name, Occupation
+FROM(
+    SELECT 
+        Name,
+        Occupation,
+        ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) as rn
+    FROM OCCUPATIONS    
+)as t
+ORDER BY rn, Occupation;    
+```
+<img width="272" height="267" alt="image" src="https://github.com/user-attachments/assets/a2b23557-8633-476a-89ac-bf75e1feea9a" />
+
 
 -- SELECT
 --     CASE WHEN Occupation='Doctor' THEN NAME END,      -- => Jenny NULL NULL NULL
