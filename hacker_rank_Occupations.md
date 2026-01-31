@@ -1,4 +1,4 @@
-아 왤케 어려워
+아 왤케 어려워. 여러번 풀어보기로 한다.
 https://www.hackerrank.com/challenges/occupations/problem?isFullScreen=true
 
 ## 문제
@@ -35,6 +35,12 @@ FROM OCCUPATIONS;
 2. t : SELECT한 테이블 전체
 
 ### 2-2. ORDER BY 절을 사용해서 재정렬한다.
+1.ACTOR
+2.DOCTOR
+3.PROFESSOR
+4.SINGER
+
+순으로 정렬 됨
 
 ```sql
 SELECT rn, Name, Occupation
@@ -50,51 +56,34 @@ ORDER BY rn, Occupation;
 <img width="272" height="267" alt="image" src="https://github.com/user-attachments/assets/a2b23557-8633-476a-89ac-bf75e1feea9a" />
 
 
--- SELECT
---     CASE WHEN Occupation='Doctor' THEN NAME END,      -- => Jenny NULL NULL NULL
---     CASE WHEN Occupation='Professor' THEN NAME END,      -- => NULL Ashley NULL NULL
---     CASE WHEN Occupation='Singer' THEN NAME END,      -- => NULL NULL Meera NULL
---     CASE WHEN Occupation='Actor' THEN NAME END,      -- => NULL NULL NULL Jane
--- FROM (
---     SELECT
---         Name,
---         Occupation,
---         ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
---     FROM OCCUPATIONS
--- ) t
--- ORDER BY rn, Occupation;
+# 3. CASE 문을 사용해서 나열한다.
+이 행이 특정 직업이면 해당 컬럼에 이름을 찍고 아니면 NULL을 넣는다
+- 이 작업을 수행하면서 세로였던 테이블이 가로 형태로 pivot됨
+
+```sql
+SELECT
+    rn,
+    CASE WHEN Occupation='Doctor' THEN NAME END,      -- => Jenny NULL NULL NULL
+    CASE WHEN Occupation='Professor' THEN NAME END,      -- => NULL Ashley NULL NULL
+    CASE WHEN Occupation='Singer' THEN NAME END,      -- => NULL NULL Meera NULL
+    CASE WHEN Occupation='Actor' THEN NAME END      -- => NULL NULL NULL Jane
+FROM (
+    SELECT
+        Name,
+        Occupation,
+        ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
+    FROM OCCUPATIONS
+) t
+ORDER BY rn, Occupation;
+```
+
+<img width="272" height="235" alt="image" src="https://github.com/user-attachments/assets/8f976b66-7f41-4f34-831e-8974329ae865" />
 
 
--- SELECT
---     rn,
---     CASE WHEN Occupation = 'Doctor'   THEN Name END AS Doctor,
---     CASE WHEN Occupation = 'Professor' THEN Name END AS Professor,
---     CASE WHEN Occupation = 'Singer'   THEN Name END AS Singer,
---     CASE WHEN Occupation = 'Actor'    THEN Name END AS Actor
--- FROM (
---     SELECT
---         Name,
---         Occupation,
---         ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
---     FROM OCCUPATIONS
--- ) t
--- ORDER BY rn, Occupation;
 
--- rn Doctor   Professor   Singer   Actor
--- 1  Jenny    NULL        NULL     NULL
--- 1  NULL     Ashley      NULL     NULL
--- 1  NULL     NULL        Meera    NULL
--- 1  NULL     NULL        NULL     Jane
+# 4단계 : rn기준으로 GROUP BY 후 CASE문에 MAX를 붙여 NULL이 아닌 값만 남긴다
 
--- 2  Samantha NULL        NULL     NULL
--- 2  NULL     Christeen   NULL     NULL
--- 2  NULL     NULL        Priya    NULL
--- 2  NULL     NULL        NULL     Julia
-
--- 3  NULL     Ketty       NULL     NULL
--- 3  NULL     NULL        NULL     Maria
-
-
+```sql
 SELECT
   MAX(CASE WHEN Occupation = 'Doctor'    THEN Name END) AS Doctor,
   MAX(CASE WHEN Occupation = 'Professor' THEN Name END) AS Professor,
@@ -109,6 +98,10 @@ FROM (
 ) t
 GROUP BY rn
 ORDER BY rn;
+```
+
+<img width="272" height="178" alt="image" src="https://github.com/user-attachments/assets/692844d6-30ba-4755-a445-97c006a05580" />
+
 
 
 -- 왜 pivot에 max 값을 쓰고 마지막에 group by를 하는지 고민해보기
