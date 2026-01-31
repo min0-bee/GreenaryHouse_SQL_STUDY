@@ -103,9 +103,9 @@ ORDER BY rn;
 <img width="272" height="178" alt="image" src="https://github.com/user-attachments/assets/692844d6-30ba-4755-a445-97c006a05580" />
 
 
+### 왜 이렇게 할까? (pivot시 MAX ~ GROUP BY를 하는 이유)
 
--- 왜 pivot에 max 값을 쓰고 마지막에 group by를 하는지 고민해보기
--- CASE WHEN Occupation='Doctor' THEN Name END을 rn=1 그룹에 적용하면 값이:
+-- CASE WHEN Occupation='Doctor' THEN Name END을 rn=1 그룹에 적용하면 값이:     
 
 -- (Jenny NULL NULL NULL)
 
