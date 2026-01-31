@@ -13,6 +13,7 @@ Doctor, Professor, Singer, Actor
 
 만약 어떤 직업 컬럼에 더 이상 출력할 이름이 없다면
 그 자리는 NULL을 출력한다.
+---
 
 # 1단계 : 특정 직업에 속하는 사람들을 나열한다. : ROW_NUMBER와 PARTITION BY 사용
 1. 직업별로 묶어서 일열로 세우고
