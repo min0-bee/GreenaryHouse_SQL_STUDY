@@ -13,6 +13,7 @@ Doctor, Professor, Singer, Actor
 
 만약 어떤 직업 컬럼에 더 이상 출력할 이름이 없다면
 그 자리는 NULL을 출력한다.
+
 ---
 
 # 1단계 : 특정 직업에 속하는 사람들을 나열한다. : ROW_NUMBER와 PARTITION BY 사용
@@ -115,4 +116,42 @@ ORDER BY rn;
 
 -- 하지만 SQL은 GROUP BY로 묶인 그룹마다 각 컬럼이 “딱 하나의 값”만 가지고 있어야하므로, NULL이 아닌 대표값을 뽑게 하기 위해 MAX() 사용
 
+
+# 회고
+지인이 서브쿼리문을 쓸 때 WITH 문을 쓰면 편하다고 해서
+추가적으로 공부를 해봤다!
+
+###WITH 문이란?
+서브 쿼리가 반복되면 쿼리 가독성이 떨어지니까
+WITH문으로 가상의 테이블을 저장해두고 꺼내 쓰자!
+
+```sql
+WITH 가상의 테이블 이름 AS (
+  SELECT ...
+)
+
+-- 위에서 WITH로 가상의 테이블을 설정해놨기에 아래서 편하게 꺼내쓸 수 있음
+
+SELECT ...
+FROM 가상의 테이블 이름;
+```
+
+```sql
+WITH t AS(
+     SELECT
+    Name,
+    Occupation,
+    ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
+  FROM OCCUPATIONS    
+)
+
+SELECT
+  MAX(CASE WHEN Occupation = 'Doctor'    THEN Name END) AS Doctor,
+  MAX(CASE WHEN Occupation = 'Professor' THEN Name END) AS Professor,
+  MAX(CASE WHEN Occupation = 'Singer'    THEN Name END) AS Singer,
+  MAX(CASE WHEN Occupation = 'Actor'     THEN Name END) AS Actor
+FROM t
+GROUP BY rn
+ORDER BY rn;
+```
 
