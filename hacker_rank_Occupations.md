@@ -1,4 +1,4 @@
-아 왤케 어려워. 여러번 풀어보기로 한다.
+아 왤케 어려워. 여러번 풀어보기로 한다.      
 https://www.hackerrank.com/challenges/occupations/problem?isFullScreen=true
 
 ## 문제
