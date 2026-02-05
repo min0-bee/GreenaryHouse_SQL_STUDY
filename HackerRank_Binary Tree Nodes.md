@@ -1,6 +1,6 @@
 https://www.hackerrank.com/challenges/binary-search-tree-1/problem?isFullScreen=true
 
-# 1단계 : 접근 방식 고민 : CASE WHEN 문
+# 접근 방식 고민 : CASE WHEN 문
 - CASE WHEN 문을 쓰는건 알겠는데
 - EXISTS를 고민하지 못했음.
 
@@ -15,10 +15,48 @@ EXISTS (서브쿼리) 형태로 쓴다.
 - 값 자체에는 관심 없음
 - 존재 여부만 본다
 
-1. CASE WHEN 으로 조건 걸기. => P가 NULL 이면 ROOT노드 이다.
-2. 부모 노드와 자식 노드가 둘 다 존재하면 INNER 노드이다
-3. 그 외에는 LEAF 노드이다
 
+### 1단계 : Root 노드
+- 부모가 없음
+- `P IS NULL`
+
+### 2단계 : Inner 노드
+- 자식이 하나라도 있음
+- 어떤 경우에노 `이 노드를 부모로 삼는 노드`가 하나라도 있으면 TRUE
+- `EXIST`로 처리
+
+```sql
+EXISTS(
+  SELECT *
+  FROM BST
+  WHERE P = N
+)
+```
+
+### 3단계
+- 자식이 없는 노드
+- ROOT도 INNER도 아니기에 `ELSE`로 처리
+
+
+```
+SELECT
+  b1.N,
+  CASE
+    WHEN b1.P IS NULL THEN 'Root'
+    WHEN EXISTS (
+      SELECT 1
+      FROM BST b2
+      WHERE b2.P = b1.N
+    ) THEN 'Inner'
+    ELSE 'Leaf'
+  END AS node_type
+FROM BST b1
+ORDER BY b1.N;
+```
+
+- `WHERE b2.P = b1.N`
+- 현재 행(b1)에 대해 BST테이블 전체(b2)를 하나씩 훑으면서 b2.P 값이 b1.N과 같은 행이 있는지 확인한다
+- 그런 행이 하나라도 있으면 TRUE
 
 
 
